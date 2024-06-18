@@ -6,7 +6,7 @@ import { PaginationDto } from 'src/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller('products')
-export class ProductsController {
+export class ProductsController { 
   constructor(private readonly productsService: ProductsService) { }
 
   // @Post()
@@ -27,7 +27,7 @@ export class ProductsController {
   // findOne(@Param('id',ParseIntPipe) id: number) {
   @MessagePattern({ cmd: 'find_one_product' })
   findOne(@Payload('id', ParseIntPipe) id: number) {
-    return this.productsService.findOne(+id);
+    return this.productsService.findOne(id);
   }
 
   // @Patch(':id')
@@ -44,5 +44,9 @@ export class ProductsController {
   @MessagePattern({ cmd: 'delete_product' })
   remove(@Payload('id', ParseIntPipe) id: number) {
     return this.productsService.remove(id);
+  }
+  @MessagePattern({ cmd: 'validate_products' })
+  validateProducts(@Payload() ids: number[]) {
+    return this.productsService.validateProducts(ids);
   }
 }
